@@ -7,9 +7,11 @@
     
     <link rel="stylesheet" href="./assets/styles/fonts.css">
     <link rel="stylesheet" href="./assets/styles/styles.css">
+    <script type="text/javascript" src="./mock/data.json"></script>
+    <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.prod.js"></script>
 </head>
 <body>
-    <div class="box">
+    <div id="app" class="box">
         <div class="box-blue">
             <div class="font-02">
                 Your Result
@@ -29,25 +31,12 @@
                 <span class="font-05">Summary</span>
 
                 <div class="box-item-summary">
-                    <div class="item">
-                        <span class="percent-text"><img class="percent-img" src="./assets/images/icon-reaction.svg" alt="reaction"/> Reaction</span>
-                        <span class="percent"><span class="percent-sb">80</span> / 100</span>
+                    <div class="item" v-for="item in listSummary" :key="item.score">
+                        <span class="percent-text"><img class="percent-img" :src="item.icon" alt="reaction"/> {{item.category}}</span>
+                        <span class="percent"><span class="percent-sb">{{item.score}}</span> / 100</span>
                     </div>
 
-                    <div class="item">
-                        <span class="percent-text"><img class="percent-img" src="./assets/images/icon-memory.svg" alt="memory"/>Memory</span>
-                        <span class="percent"><span class="percent-sb">92</span> / 100</span>
-                    </div>
-
-                    <div class="item">
-                        <span class="percent-text"><img class="percent-img" src="./assets/images/icon-verbal.svg" alt="verbal"/>Verbal</span>
-                        <span class="percent"><span class="percent-sb">61</span> / 100</span>
-                    </div>
-
-                    <div class="item">
-                        <span class="percent-text"><img class="percent-img" src="./assets/images/icon-visual.svg" alt="visual"/>Visual</span>
-                        <span class="percent"><span class="percent-sb">72</span> / 100</span>
-                    </div>
+                   
                 </div>
 
                 <input class="btn-radient" type="button" value="Continue">
@@ -56,4 +45,27 @@
         </div>
     </div>
 </body>
+<script>
+    const { createApp } = Vue;
+    
+    var data;
+    fetch('./mock/data.json')
+        .then((response) => response.json())
+        .then((json) => 
+            appC(json)
+        );
+
+    function appC(json){
+
+        createApp({
+        data() {
+            return {
+                listSummary: json,
+            }
+        }
+        }).mount('#app')
+    }
+   
+</script>
+    
 </html>
